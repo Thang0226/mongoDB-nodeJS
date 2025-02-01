@@ -1,0 +1,24 @@
+{
+  "name": "mongodb-nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/Thang0226/mongoDB-nodeJS#readme",
+  "bugs": {
+    "url": "https://github.com/Thang0226/mongoDB-nodeJS/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Thang0226/mongoDB-nodeJS.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "mongodb": "^6.13.0"
+  }
+}
