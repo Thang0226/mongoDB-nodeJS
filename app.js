@@ -4,6 +4,7 @@ import { ObjectId } from "mongodb";
 
 // init app & middleware
 const app = express();
+app.use(express.json()); // need this to automatically parse req.body to json
 
 // connect to db & start server
 let db;
@@ -59,5 +60,40 @@ app.get("/books/:id", (req, res) => {
     .catch((err) => {
       console.log(err);
       res.status(500).json({ error: "Error fetching book" });
+    });
+});
+
+app.post("/books", (req, res) => {
+  let book = req.body;
+  db.collection("books")
+    .insertOne(book)
+    .then((result) => {
+      res.status(201).json(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ error: "Error inserting book" });
+    });
+});
+
+app.delete("/books/:id", (req, res) => {
+  if (!ObjectId.isValid(req.params.id)) {
+    res.status(400).json({ error: "Invalid ID" });
+    return;
+  }
+
+  let id = new ObjectId(req.params.id);
+  db.collection("books")
+    .deleteOne({ _id: id })
+    .then((result) => {
+      if (result.deletedCount === 0) {
+        res.status(404).json({ message: "Book not found" });
+        return;
+      }
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ error: "Error deleting book" });
     });
 });
