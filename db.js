@@ -3,7 +3,7 @@ import { MongoClient } from "mongodb";
 let dbConnection;
 
 export function connection(callback) {
-  const db = new MongoClient("mongodb://localhost:27017/bookstore");
+  const db = new MongoClient("mongodb://localhost:27017/bookstore"); // can replace by MongoDB Atlas connection string
   return db
     .connect()
     .then((client) => {

@@ -22,10 +22,16 @@ connection((err) => {
 
 // route requests
 app.get("/books", (req, res) => {
+  const BOOKS_PER_PAGE = 3;
+  let page = req.query.page || 0;
+
   let books = [];
+
   db.collection("books")
     .find()
     .sort({ rating: -1 })
+    .skip(page * BOOKS_PER_PAGE)
+    .limit(BOOKS_PER_PAGE)
     .forEach((book) => {
       // cursor method to iterate through the results
       books.push(book);
@@ -37,8 +43,6 @@ app.get("/books", (req, res) => {
       console.log(err);
       res.status(500).json({ message: "Error fetching books" });
     });
-
-  //   res.json({ message: "Books route" });
 });
 
 app.get("/books/:id", (req, res) => {
