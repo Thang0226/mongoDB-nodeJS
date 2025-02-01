@@ -1,5 +1,6 @@
 import express from "express";
 import { connection, getDB } from "./db.js";
+import { ObjectId } from "mongodb";
 
 // init app & middleware
 const app = express();
@@ -37,4 +38,26 @@ app.get("/books", (req, res) => {
     });
 
   //   res.json({ message: "Books route" });
+});
+
+app.get("/books/:id", (req, res) => {
+  if (!ObjectId.isValid(req.params.id)) {
+    res.status(400).json({ error: "Invalid ID" });
+    return;
+  }
+
+  let id = new ObjectId(req.params.id);
+  db.collection("books")
+    .findOne({ _id: id })
+    .then((book) => {
+      if (!book) {
+        res.status(404).json({ message: "Book not found" });
+        return;
+      }
+      res.status(200).json(book);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ error: "Error fetching book" });
+    });
 });
